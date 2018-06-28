@@ -15,16 +15,31 @@ GPIO.setup(DOOR_SENSOR_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 oldIsOpen = None
 isOpen = None
 
+#INFO FOR SENDING TEXT METHOD
+me = "your email"
+to = ""your phone number"@vtext.com"
+login = "your gmail address"
+password = "your password"
+smptserver = "smtp.gmail.com:587"
 
+#SENDING TEXT METHOD
+def sendemail(sender, to, message, login, password, smptserver):
+	server = smtplib.SMTP(smptserver)
+	server.starttls()
+	server.login(login,password)
+	problems = server.sendmail(sender, to, message) 
+
+message1 = "g"
+    
+    
 while True: 
     oldIsOpen = isOpen 
     isOpen = GPIO.input(DOOR_SENSOR_PIN)  
     if (isOpen and (isOpen != oldIsOpen)):  
-        print "Space is unoccupied!"  
-        GPIO.output(RED_LIGHT, False)  
-        GPIO.output(GREEN_LIGHT, True) 
+        print "Door has opened!"  
+        sendemail(me, to, message, login, password, smptserver)
     elif (isOpen != oldIsOpen):  
-        print "Space is occupied!"  
+        print "Door has closed"  
         GPIO.output(GREEN_LIGHT, False)  
         GPIO.output(RED_LIGHT, True)  
     time.sleep(0.1)
